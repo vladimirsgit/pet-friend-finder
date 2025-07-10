@@ -19,6 +19,42 @@ services:
     depends_on:
       - db
       - redis
+    
+  users-microservice:
+    build:
+      context: ./backend/microservices/users/
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/microservices/users/.env
+    volumes:
+      - ./backend/microservices/users/:/code
+    expose:
+      - "8001"
+    ports:
+      - "8001:8001"
+    networks:
+      - backend-net
+    depends_on:
+      - db
+      - redis
+  
+  auth-microservice:
+    build:
+      context: ./backend/microservices/auth/
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/microservices/auth/.env
+    volumes:
+      - ./backend/microservices/auth/:/code
+    expose:
+      - "8002"
+    ports:
+      - "8002:8002"
+    networks:
+      - backend-net
+    depends_on:
+      - db
+      - redis
 
   db:
     image: postgres:16-alpine
