@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
 
-class SignUpRequest(BaseModel):
+class SignUpRequestHashedPass(BaseModel):
     email: EmailStr
     username: str
     hashed_password: str
