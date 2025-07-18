@@ -19,3 +19,6 @@ def hash_with_bcrypt(data: str) -> str:
     salt = bcrypt.gensalt()
     hashed_data = bcrypt.hashpw(data.encode('utf-8'), salt)
     return hashed_data.decode('utf-8')
+
+def check_pass(data: str, hashed_pass: str) -> bool:
+    return bcrypt.checkpw(data.encode('utf-8'), hashed_pass.encode('utf-8'))

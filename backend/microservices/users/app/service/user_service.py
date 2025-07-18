@@ -24,3 +24,9 @@ class UserService:
             raise UserNotFoundError()
         user.confirmed = True
         await self.user_crud.save(user)
+
+    async def read_user(self, username: str) -> User:
+        user: Optional[User] = await self.user_crud.get_user_by_username(username)
+        if user is None:
+            raise UserNotFoundError()
+        return user
