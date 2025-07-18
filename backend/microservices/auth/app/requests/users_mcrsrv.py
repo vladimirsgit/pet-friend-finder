@@ -35,3 +35,13 @@ async def signup_user(signup_request: SignUpRequestHashedPass):
         )
     if response.status_code != HTTP_200_OK:
         raise HTTPException(status_code=response.status_code, detail=response.text)
+
+
+async def confirm_email(username: str):
+    headers = {"x-api-key": os.getenv("USERS_INTERNAL_SERVICE_API_KEY")}
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            f"{constants.USERS_MICROSERVICE_URL}/confirm_email/{username}",
+            headers=headers
+        )
+        response.raise_for_status()

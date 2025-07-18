@@ -2,7 +2,11 @@ import uuid
 
 from pydantic import EmailStr
 
+from typing import Optional
+
 from sqlmodel import SQLModel, Field
+
+from datetime import datetime
 
 from app.core.constants import constants
 
@@ -16,4 +20,5 @@ class User(SQLModel, table=True):
     email: EmailStr = Field(nullable=False)
     password: str = Field(nullable=False, min_length=constants.PASS_MIN_LEN, max_length=constants.PASS_MAX_LEN)
     confirmed: bool = Field(nullable=False, default=False)
+    created_at: Optional[datetime] = Field(default_factory=datetime.now)
 

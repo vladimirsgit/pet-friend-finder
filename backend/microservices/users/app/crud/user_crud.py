@@ -7,7 +7,7 @@ from sqlmodel import select
 
 class UserCRUD(BaseCRUD):
     async def get_user_by_username(self, username: str) -> Optional[User]:
-        stmt = select(User).where(User.id == username)
+        stmt = select(User).where(User.username == username)
 
         res = await self.db.execute(stmt)
 
@@ -22,3 +22,4 @@ class UserCRUD(BaseCRUD):
 
     async def save(self, user: User):
         self.db.add(user)
+        await self.db.commit()
