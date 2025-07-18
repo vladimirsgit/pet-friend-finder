@@ -5,6 +5,7 @@ from fastapi import Depends
 
 from app.exceptions.invalid_code_error import InvalidCodeError
 from app.exceptions.invalid_credentials_error import InvalidCredentialsError
+from app.schema.refresh_token import RefreshToken
 
 from app.schema.user_dto import UserDTO
 from app.schema.authorization_tokens import AuthorizationTokens
@@ -83,3 +84,6 @@ class AuthService:
         await self.r_client.set(name=hashed_refresh_token, value=username, ex=int(constants.REFRESH_TOKEN_EXP.total_seconds()))
 
         return authorization_tokens
+
+    async def logout(self, refresh_token: RefreshToken):
+        await self.r_client.delete(await hash_with_hashlib(refresh_token.token))

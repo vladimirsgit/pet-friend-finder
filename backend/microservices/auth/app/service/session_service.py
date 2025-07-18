@@ -58,20 +58,20 @@ class SessionService:
 
     async def validate_refresh_token(self, refresh_token: str) -> AuthorizationTokens:
         hashed_token = await hash_with_hashlib(refresh_token)
-        email_value = await self.r_client.get(hashed_token)
-        if not email_value:
+        username = await self.r_client.get(hashed_token)
+        if not username:
             error = RefreshTokenExpiredError()
             logger.error(error.message)
             raise error
-        email_value = email_value.decode('utf-8')
+        username = username.decode('utf-8')
 
         new_refresh_token = await SessionService.generate_refresh_token()
         await self.r_client.delete(hashed_token)
         hashed_new_refresh_token = await hash_with_hashlib(new_refresh_token.token)
 
-        await self.r_client.set(name=hashed_new_refresh_token, value=email_value,  ex=int(constants.REFRESH_TOKEN_EXP.total_seconds()))
+        await self.r_client.set(name=hashed_new_refresh_token, value=username,  ex=int(constants.REFRESH_TOKEN_EXP.total_seconds()))
 
-        new_access_token = await SessionService.generate_access_token(email_value)
+        new_access_token = await SessionService.generate_access_token(username)
 
         return AuthorizationTokens(access_token=new_access_token, refresh_token=new_refresh_token)
 

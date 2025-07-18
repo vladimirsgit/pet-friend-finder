@@ -3,15 +3,20 @@ import logging
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from httpx import HTTPStatusError
 
+from app.core.dependencies import get_logged_in_user
 from app.exceptions.invalid_code_error import InvalidCodeError
 from app.exceptions.invalid_credentials_error import InvalidCredentialsError
+from app.exceptions.refresh_token_expired_error import RefreshTokenExpiredError
 from app.schema.authorization_tokens import AuthorizationTokens
 from app.schema.login_request import LogInRequest
+from app.schema.refresh_token import RefreshToken
 from app.schema.signup_request import SignUpRequest
 
 from starlette.status import HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
+from app.schema.user_dto import UserDTO
 from app.service.auth_service import AuthService
+from app.service.session_service import SessionService
 
 from app.utils.mailer import send_verification_mail
 
@@ -54,3 +59,23 @@ async def login(
         return await auth_service.login(login_request)
     except (InvalidCredentialsError, HTTPStatusError):
         raise HTTPException(status_code=HTTP_401_UNAUTHORIZED)
+
+@router.post("/refresh_session", response_model=AuthorizationTokens)
+async def refresh_session(
+        refresh_token: RefreshToken,
+        session_service: SessionService = Depends(SessionService),
+):
+    try:
+        return await session_service.validate_refresh_token(refresh_token.token)
+    except RefreshTokenExpiredError:
+        raise HTTPException(status_code=HTTP_401_UNAUTHORIZED)
+
+
+@router.post("/logout")
+async def logout(
+        refresh_token: RefreshToken,
+        user: UserDTO = Depends(get_logged_in_user),
+        auth_service: AuthService = Depends(AuthService)
+):
+    logger.info(f'Logging out user {user.username}')
+    return await auth_service.logout(refresh_token)
