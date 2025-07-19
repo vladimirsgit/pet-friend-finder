@@ -12,7 +12,7 @@ from fastapi import Depends
 from app.core.redis_client import redis_client
 from app.core.config import Config
 
-from app.exceptions.refresh_token_expired_error import RefreshTokenExpiredError
+from app.exception.refresh_token_expired_error import RefreshTokenExpiredError
 
 from app.schema.access_token import AccessToken
 from app.schema.authorization_tokens import AuthorizationTokens

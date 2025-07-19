@@ -12,8 +12,6 @@ from app.schema.signup_request import SignUpRequest
 from app.schema.signup_request_hashed_pass import SignUpRequestHashedPass
 from app.schema.user_dto import UserDTO
 
-USERS_MICROSERVICE_URL = "http://users-microservice:8001/api/v1/internal"
-
 
 async def check_if_user_exists(username: str) -> bool:
     headers = {"x-api-key": os.getenv("USERS_INTERNAL_SERVICE_API_KEY")}

@@ -15,6 +15,8 @@ class Constants:
     EMAIL_VALIDATION_CODE_EXP = timedelta(minutes=5)
     PASSWORD_CHANGE_TOKEN_EXP = timedelta(minutes=5)
 
+    AUTH_MICROSERVICE_URL = "http://auth-microservice:8002/api/v1/internal"
+
     API_KEY_HEADER_NAME = "x-api-key"
 
 constants = Constants()

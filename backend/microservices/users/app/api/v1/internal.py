@@ -2,7 +2,7 @@ import logging
 
 from fastapi import APIRouter, Security, Depends, HTTPException
 
-from app.exceptions.user_not_found_error import UserNotFoundError
+from app.exception.user_not_found_error import UserNotFoundError
 from app.schema.signup_request import SignUpRequest
 from app.core.dependencies import check_internal_api_key
 from app.schema.user_dto import UserDTO

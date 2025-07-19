@@ -4,9 +4,9 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from httpx import HTTPStatusError
 
 from app.core.dependencies import get_logged_in_user
-from app.exceptions.invalid_code_error import InvalidCodeError
-from app.exceptions.invalid_credentials_error import InvalidCredentialsError
-from app.exceptions.refresh_token_expired_error import RefreshTokenExpiredError
+from app.exception.invalid_code_error import InvalidCodeError
+from app.exception.invalid_credentials_error import InvalidCredentialsError
+from app.exception.refresh_token_expired_error import RefreshTokenExpiredError
 from app.schema.authorization_tokens import AuthorizationTokens
 from app.schema.login_request import LogInRequest
 from app.schema.refresh_token import RefreshToken

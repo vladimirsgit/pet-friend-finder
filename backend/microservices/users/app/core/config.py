@@ -22,3 +22,4 @@ class Config:
 
     # INTERNAL API KEYS
     OWN_API_KEY = os.getenv("OWN_API_KEY")
+    AUTH_INTERNAL_SERVICE_API_KEY = os.getenv("AUTH_INTERNAL_SERVICE_API_KEY")

@@ -9,10 +9,12 @@ class Constants:
     REFRESH_TOKEN_REDIS_KEY = "REFRESH_TOKEN"
 
     REFRESH_TOKEN_EXP = timedelta(minutes=60)
-    ACCESS_TOKEN_EXP = timedelta(minutes=1)
+    ACCESS_TOKEN_EXP = timedelta(days=60)
 
     EMAIL_VALIDATION_CODE_EXP = timedelta(minutes=5)
     PASSWORD_CHANGE_TOKEN_EXP = timedelta(minutes=5)
+
+    API_KEY_HEADER_NAME = "x-api-key"
 
     USERS_MICROSERVICE_URL = "http://users-microservice:8001/api/v1/internal"
 

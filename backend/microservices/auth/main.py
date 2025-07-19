@@ -6,7 +6,7 @@ from app.core.db import init_db
 from app.core.redis_client import redis_client
 import logging
 
-from app.api.v1 import auth
+from app.api.v1 import auth, internal
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -28,6 +28,7 @@ app = FastAPI(lifespan=lifespan)
 
 api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
+api_router.include_router(internal.router, prefix="/internal", tags=["internal"])
 app.include_router(api_router)
 
 @app.exception_handler(Exception)

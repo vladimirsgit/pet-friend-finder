@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from app.core.constants import constants
 from app.crud.user_crud import UserCRUD
-from app.exceptions.user_not_found_error import UserNotFoundError
+from app.exception.user_not_found_error import UserNotFoundError
 from app.model.user import User
 from app.schema.signup_request import SignUpRequest
 

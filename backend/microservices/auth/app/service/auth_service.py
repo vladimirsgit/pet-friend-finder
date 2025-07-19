@@ -3,8 +3,8 @@ from typing import Optional
 import redis.asyncio as redis
 from fastapi import Depends
 
-from app.exceptions.invalid_code_error import InvalidCodeError
-from app.exceptions.invalid_credentials_error import InvalidCredentialsError
+from app.exception.invalid_code_error import InvalidCodeError
+from app.exception.invalid_credentials_error import InvalidCredentialsError
 from app.schema.refresh_token import RefreshToken
 
 from app.schema.user_dto import UserDTO
