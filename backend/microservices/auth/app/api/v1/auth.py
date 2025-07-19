@@ -48,7 +48,6 @@ async def confirm_email(
     except InvalidCodeError as e:
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail=str(e))
 
-
 @router.post("/login", response_model=AuthorizationTokens)
 async def login(
         login_request: LogInRequest,
@@ -79,3 +78,10 @@ async def logout(
 ):
     logger.info(f'Logging out user {user.username}')
     return await auth_service.logout(refresh_token)
+
+
+@router.get("/validate_token")
+async def validate_token(
+        user: UserDTO = Depends(get_logged_in_user),
+):
+    return {"valid"}

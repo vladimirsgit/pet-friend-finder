@@ -9,7 +9,7 @@ class Constants:
     REFRESH_TOKEN_REDIS_KEY = "REFRESH_TOKEN"
 
     REFRESH_TOKEN_EXP = timedelta(minutes=60)
-    ACCESS_TOKEN_EXP = timedelta(minutes=0)
+    ACCESS_TOKEN_EXP = timedelta(minutes=1)
 
     EMAIL_VALIDATION_CODE_EXP = timedelta(minutes=5)
     PASSWORD_CHANGE_TOKEN_EXP = timedelta(minutes=5)
