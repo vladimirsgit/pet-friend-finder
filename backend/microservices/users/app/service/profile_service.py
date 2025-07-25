@@ -24,3 +24,6 @@ class ProfileService:
                                              phone_number=profile.phone_number))
     async def update(self, profile: ProfileDTO, user_id: uuid.UUID):
         await self.profile_crud.update(profile, user_id)
+
+    async def get_profile(self, user_id: uuid.UUID) -> Profile:
+        return await self.profile_crud.get_profile_by_user_id(user_id)
