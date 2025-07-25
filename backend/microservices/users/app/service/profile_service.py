@@ -1,3 +1,6 @@
+import uuid
+from typing import Optional
+
 from fastapi import Depends
 
 from app.crud.profile_crud import ProfileCRUD
@@ -9,5 +12,15 @@ class ProfileService:
     def __init__(self, profile_crud: ProfileCRUD = Depends(ProfileCRUD)):
         self.profile_crud = profile_crud
 
-    async def save(self, profile: ProfileDTO):
-        await self.profile_crud.save(profile)
+    async def create(self, profile: ProfileDTO, user_id: uuid.UUID):
+        await self.profile_crud.save(Profile(user_id=user_id,
+                                             first_name=profile.first_name,
+                                             last_name=profile.last_name,
+                                             bio=profile.bio,
+                                             latitude=profile.latitude,
+                                             longitude=profile.longitude,
+                                             age=profile.age,
+                                             gender=profile.gender,
+                                             phone_number=profile.phone_number))
+    async def update(self, profile: ProfileDTO, user_id: uuid.UUID):
+        await self.profile_crud.update(profile, user_id)

@@ -17,12 +17,19 @@ from starlette.status import HTTP_400_BAD_REQUEST, HTTP_409_CONFLICT, HTTP_401_U
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-
 @router.post("/create")
 async def create_profile(
         profile: ProfileDTO,
         profile_service: ProfileService = Depends(ProfileService),
         user: UserDTO = Depends(get_logged_in_user)
 ):
-    await profile_service.save(profile)
+    await profile_service.create(profile, user.id)
 
+
+@router.patch("/update")
+async def update_profile(
+        profile: ProfileDTO,
+        profile_service: ProfileService = Depends(ProfileService),
+        user: UserDTO = Depends(get_logged_in_user)
+):
+    await profile_service.update(profile, user.id)

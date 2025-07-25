@@ -1,5 +1,5 @@
 networks:
-  backend-net:
+  pff-backend-net:
 
 services:
   health-microservice:
@@ -15,7 +15,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - backend-net
+      - pff-backend-net
     depends_on:
       - db
       - redis
@@ -33,7 +33,7 @@ services:
     ports:
       - "8001:8001"
     networks:
-      - backend-net
+      - pff-backend-net
     depends_on:
       - db
       - redis
@@ -51,7 +51,7 @@ services:
     ports:
       - "8002:8002"
     networks:
-      - backend-net
+      - pff-backend-net
     depends_on:
       - db
       - redis
@@ -59,7 +59,7 @@ services:
   db:
     image: postgres:17
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - pff_postgres_data:/var/lib/postgresql/data/
     expose:
       - "5432"
     ports:
@@ -69,7 +69,7 @@ services:
       - POSTGRES_PASSWORD=mypass
       - POSTGRES_DB=pffdb
     networks:
-      - backend-net
+      - pff-backend-net
 
   nginx:
     image: nginx:1.28.0-alpine
@@ -82,7 +82,7 @@ services:
     depends_on:
       - health-microservice
     networks:
-      - backend-net
+      - pff-backend-net
 
   redis:
     image: redis:7.4-alpine
@@ -91,28 +91,28 @@ services:
       - "6379"
     volumes:
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-      - redis_data:/data
+      - pff_redis_data:/data
     networks:
-      - backend-net
+      - pff-backend-net
 
-  node:
-    build:
-      context: ./frontend/
-      dockerfile: Dockerfile
-    expose:
-      - "5173"
-    ports:
-      - "5173:5173"
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./frontend/pff-react/src:/app/src
-      - ./frontend/pff-react/public:/app/public
-    depends_on:
-      - health-microservice
-    networks:
-      - backend-net
+#  node:
+#    build:
+#      context: ./frontend/
+#      dockerfile: Dockerfile
+#    expose:
+#      - "5173"
+#    ports:
+#      - "5173:5173"
+#    stdin_open: true
+#    tty: true
+#    volumes:
+#      - ./frontend/pff-react/src:/app/src
+#      - ./frontend/pff-react/public:/app/public
+#    depends_on:
+#      - health-microservice
+#    networks:
+#      - pff-backend-net
 
 volumes:
-  postgres_data:
-  redis_data:
+  pff_postgres_data:
+  pff_redis_data:

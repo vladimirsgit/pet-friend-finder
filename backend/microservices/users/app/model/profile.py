@@ -18,7 +18,7 @@ class Profile(SQLModel, table=True):
     __table_args__ = {"schema": "users_svc"}
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id")
+    user_id: uuid.UUID = Field(foreign_key="users_svc.users.id")
     first_name: str = Field(nullable=False)
     last_name: str = Field(nullable=False)
     bio: str = Field(nullable=False)

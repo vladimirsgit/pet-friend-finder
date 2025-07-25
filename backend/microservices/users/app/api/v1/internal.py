@@ -3,6 +3,7 @@ import logging
 from fastapi import APIRouter, Security, Depends, HTTPException
 
 from app.exception.user_not_found_error import UserNotFoundError
+from app.model.user import User
 from app.schema.signup_request import SignUpRequest
 from app.core.dependencies import check_internal_api_key
 from app.schema.user_dto import UserDTO
@@ -25,7 +26,7 @@ async def register(
     except ValueError as e:
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail=str(e))
 
-@router.get("/user/{username}", response_model=UserDTO)
+@router.get("/user/{username}", response_model=User)
 async def read_user(
         username: str,
         api_key: str = Security(check_internal_api_key),
