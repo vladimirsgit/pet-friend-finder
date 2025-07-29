@@ -56,6 +56,24 @@ services:
       - db
       - redis
 
+  adoption-microservice:
+    build:
+      context: ./backend/microservices/adoption/
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/microservices/adoption/.env
+    volumes:
+      - ./backend/microservices/adoption/:/code
+    expose:
+      - "8003"
+    ports:
+      - "8003:8003"
+    networks:
+      - pff-backend-net
+    depends_on:
+      - db
+      - redis
+
   db:
     image: postgres:17
     volumes:
