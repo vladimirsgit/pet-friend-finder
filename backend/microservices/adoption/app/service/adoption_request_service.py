@@ -72,7 +72,7 @@ class AdoptionRequestService:
     async def __handle_accept_reject_adoption_action(self, action: str, pet_id: uuid.UUID, user: UserDTO, requester_id: uuid.UUID):
         adoption_request: AdoptionRequest = await self.get_adoption_request(pet_id=pet_id, requester_id=requester_id)
 
-        if adoption_request.status != AdoptionRequestStatus.PENDING or adoption_request.status == AdoptionRequestStatus.WITHDREW or user.id == requester_id:
+        if adoption_request.status != AdoptionRequestStatus.PENDING or user.id == requester_id or user.id != adoption_request.owner_id:
             invalid_adoption_action_error = InvalidAdoptionActionError()
             logger.error(invalid_adoption_action_error.message)
             raise invalid_adoption_action_error
