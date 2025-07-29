@@ -4,6 +4,7 @@ from typing import Optional, List, Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 
+from app.enum.adoption_request_action import AdoptionRequestAction
 from app.enum.adoption_request_status import AdoptionRequestStatus
 from app.exception.adoption_request_exists_error import AdoptionRequestExistsError
 from app.exception.adoption_request_not_found_error import AdoptionRequestNotFoundError
@@ -61,7 +62,7 @@ async def get_sent_adoption_requests(
 async def perform_adoption_action(
         pet_id: uuid.UUID,
         requester_id: uuid.UUID,
-        action: Literal["ACCEPT", "REJECT", "WITHDRAW"],
+        action: Literal[AdoptionRequestAction.ACCEPT, AdoptionRequestAction.REJECT, AdoptionRequestAction.WITHDRAW],
         adoption_request_service: AdoptionRequestService = Depends(AdoptionRequestService),
         user: UserDTO = Depends(get_logged_in_user),
 ):

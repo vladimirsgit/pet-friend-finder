@@ -6,6 +6,7 @@ from typing import List, Optional
 from fastapi import Depends
 
 from app.crud.adoption_request_crud import AdoptionRequestCRUD
+from app.enum.adoption_request_action import AdoptionRequestAction
 from app.enum.adoption_request_status import AdoptionRequestStatus
 from app.exception.adoption_request_exists_error import AdoptionRequestExistsError
 from app.exception.invalid_adoption_action_error import InvalidAdoptionActionError
@@ -51,8 +52,8 @@ class AdoptionRequestService:
 
         await self.adoption_request_crud.create_request(adoption_request)
 
-    async def handle_adoption_action(self, action: str, pet_id: uuid.UUID, user: UserDTO, requester_id: uuid.UUID):
-        if action == "WITHDRAW":
+    async def handle_adoption_action(self, action: AdoptionRequestAction, pet_id: uuid.UUID, user: UserDTO, requester_id: uuid.UUID):
+        if action == AdoptionRequestAction.WITHDRAW:
             await self.__handle_withdraw_adoption_action(pet_id, user)
         else:
             await self.__handle_accept_reject_adoption_action(action, pet_id, user, requester_id)
@@ -69,7 +70,7 @@ class AdoptionRequestService:
 
         await self.adoption_request_crud.update_adoption_request(adoption_request)
 
-    async def __handle_accept_reject_adoption_action(self, action: str, pet_id: uuid.UUID, user: UserDTO, requester_id: uuid.UUID):
+    async def __handle_accept_reject_adoption_action(self, action: AdoptionRequestAction, pet_id: uuid.UUID, user: UserDTO, requester_id: uuid.UUID):
         adoption_request: AdoptionRequest = await self.get_adoption_request(pet_id=pet_id, requester_id=requester_id)
 
         if adoption_request.status != AdoptionRequestStatus.PENDING or user.id == requester_id or user.id != adoption_request.owner_id:
@@ -77,7 +78,7 @@ class AdoptionRequestService:
             logger.error(invalid_adoption_action_error.message)
             raise invalid_adoption_action_error
 
-        if action == "ACCEPT":
+        if action == AdoptionRequestAction.ACCEPT:
             adoption_request.status = AdoptionRequestStatus.ACCEPTED
         else:
             adoption_request.status = AdoptionRequestStatus.REJECTED
