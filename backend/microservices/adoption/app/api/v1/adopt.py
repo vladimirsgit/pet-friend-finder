@@ -62,7 +62,7 @@ async def get_sent_adoption_requests(
 async def perform_adoption_action(
         pet_id: uuid.UUID,
         requester_id: uuid.UUID,
-        action: Literal[AdoptionRequestAction.ACCEPT, AdoptionRequestAction.REJECT, AdoptionRequestAction.WITHDRAW],
+        action: AdoptionRequestAction,
         adoption_request_service: AdoptionRequestService = Depends(AdoptionRequestService),
         user: UserDTO = Depends(get_logged_in_user),
 ):
