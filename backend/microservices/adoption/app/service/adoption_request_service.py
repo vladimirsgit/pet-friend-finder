@@ -1,6 +1,7 @@
 import uuid
 
 import logging
+from datetime import datetime
 from typing import List, Optional
 
 from fastapi import Depends
@@ -67,7 +68,7 @@ class AdoptionRequestService:
             raise invalid_adoption_action_error
 
         adoption_request.status = AdoptionRequestStatus.WITHDREW
-
+        adoption_request.modified_at = datetime.now()
         await self.adoption_request_crud.update_adoption_request(adoption_request)
 
     async def __handle_accept_reject_adoption_action(self, action: AdoptionRequestAction, pet_id: uuid.UUID, user: UserDTO, requester_id: uuid.UUID):
@@ -82,5 +83,5 @@ class AdoptionRequestService:
             adoption_request.status = AdoptionRequestStatus.ACCEPTED
         else:
             adoption_request.status = AdoptionRequestStatus.REJECTED
-
+        adoption_request.modified_at = datetime.now()
         await self.adoption_request_crud.update_adoption_request(adoption_request)
