@@ -19,6 +19,7 @@ services:
     depends_on:
       - db
       - redis
+      - rabbit
     
   users-microservice:
     build:
@@ -37,6 +38,7 @@ services:
     depends_on:
       - db
       - redis
+      - rabbit
   
   auth-microservice:
     build:
@@ -55,6 +57,7 @@ services:
     depends_on:
       - db
       - redis
+      - rabbit
 
   adoption-microservice:
     build:
@@ -73,6 +76,7 @@ services:
     depends_on:
       - db
       - redis
+      - rabbit
 
   db:
     image: postgres:17
@@ -113,6 +117,19 @@ services:
     networks:
       - pff-backend-net
 
+  rabbit:
+    image: rabbitmq:4.1.2-management
+    env_file:
+      - .env
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - pff_rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - pff-backend-net
+
+
 #  node:
 #    build:
 #      context: ./frontend/
@@ -134,3 +151,4 @@ services:
 volumes:
   pff_postgres_data:
   pff_redis_data:
+  pff_rabbitmq_data:

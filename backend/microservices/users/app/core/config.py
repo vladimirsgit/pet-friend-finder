@@ -23,3 +23,9 @@ class Config:
     # INTERNAL API KEYS
     OWN_API_KEY = os.getenv("OWN_API_KEY")
     AUTH_INTERNAL_SERVICE_API_KEY = os.getenv("AUTH_INTERNAL_SERVICE_API_KEY")
+
+    # RABBITMQ
+    RABBIT_HOST = os.getenv("RABBIT_HOST")
+    RABBIT_PORT = os.getenv("RABBIT_PORT")
+    RABBIT_USERNAME = os.getenv("RABBIT_USERNAME")
+    RABBIT_PASSWORD = os.getenv("RABBIT_PASSWORD")

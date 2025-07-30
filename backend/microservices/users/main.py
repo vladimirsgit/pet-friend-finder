@@ -4,6 +4,7 @@ from fastapi import FastAPI, APIRouter, Request, Depends
 from starlette.responses import JSONResponse
 from app.core.db import init_db
 from app.core.redis_client import redis_client
+from app.core.rabbitmq_client import rabbit_client
 import logging
 
 from app.api.v1 import internal, profile
@@ -20,8 +21,10 @@ async def lifespan(app: FastAPI):
     await init_db()
     logger.info("Connected to db")
     await redis_client.init_redis()
+    await rabbit_client.init_rabbit()
     yield
     await redis_client.close_conn()
+    await rabbit_client.close_conn()
 
 
 app = FastAPI(lifespan=lifespan)

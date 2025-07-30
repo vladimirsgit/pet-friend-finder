@@ -23,4 +23,6 @@ class Constants:
 
     API_KEY_HEADER_NAME = "x-api-key"
 
+    PET_SUGGESTION_QUEUE_NAME = 'pet_suggestion_queue'
+
 constants = Constants()
