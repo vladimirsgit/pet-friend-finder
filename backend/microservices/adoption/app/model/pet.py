@@ -1,4 +1,5 @@
 import uuid
+from typing import Optional
 
 from sqlmodel import SQLModel, Field
 
@@ -18,4 +19,6 @@ class Pet(SQLModel, table=True):
     description: str = Field(max_length=1000, nullable=False)
     vaccinated: bool = Field(nullable=False)
     neutered: bool = Field(nullable=False)
-    owner_id: uuid.UUID = Field(nullable=False)
+    owner_id: Optional[uuid.UUID] = Field(nullable=False)
+    latitude: float = Field(nullable=False)
+    longitude: float = Field(nullable=False)

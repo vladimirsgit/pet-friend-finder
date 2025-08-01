@@ -10,7 +10,11 @@ from app.enum.order import Order
 from app.exception.pet_not_found_error import PetNotFoundError
 from app.model.pet import Pet
 
-from sqlmodel import select
+from sqlmodel import select, and_
+
+from sqlalchemy import func
+
+from app.schema.pet_desc_dto import PetDescDTO
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +65,22 @@ class PetCRUD(BaseCRUD):
         else:
             stmt = stmt.order_by(getattr(Pet, sort))
 
+        res = await self.db.execute(stmt)
+        return list(res.scalars().all())
+
+    async def get_pets_with_descriptions(self, latitude: Optional[float] = None, longitude: Optional[float] = None) -> List[PetDescDTO]:
+        stmt = select(Pet.id, Pet.description)
+
+        if latitude and longitude:
+            stmt = stmt.where(and_(func.abs(Pet.latitude - latitude) <= 1), func.abs(Pet.longitude - longitude) <= 1)
 
         res = await self.db.execute(stmt)
 
-        return list(res.scalars().all())
+        return [PetDescDTO(
+            id=res_obj[0],
+            description=res_obj[1]
+        ) for res_obj in res.all()]
+
+    async def add_pet(self, pet: Pet):
+        self.db.add(pet)
+        await self.db.commit()

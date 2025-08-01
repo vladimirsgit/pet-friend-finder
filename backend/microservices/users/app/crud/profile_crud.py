@@ -39,3 +39,10 @@ class ProfileCRUD(BaseCRUD):
 
         self.db.add(old_profile)
         await self.db.commit()
+
+    async def check_if_profile_exists_by_user_id(self, user_id: uuid.UUID) -> bool:
+        stmt = select(1).where(Profile.user_id == user_id)
+
+        res = await self.db.execute(stmt)
+
+        return bool(res.scalar_one_or_none())

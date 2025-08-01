@@ -7,6 +7,8 @@ from app.crud.pet_crud import PetCRUD
 from app.enum.gender import Gender
 from app.enum.order import Order
 from app.model.pet import Pet
+from app.schema.pet_create_dto import PetCreate
+from app.schema.pet_desc_dto import PetDescDTO
 
 
 class PetService:
@@ -29,3 +31,10 @@ class PetService:
         if sort not in Pet.model_fields.keys():
             raise ValueError(f"Sort by {sort} not supported.")
         return await self.pet_crud.filter_pets(name=name, type=type, breed=breed, age=age, gender=gender, description=description, vaccinated=vaccinated, owner_id=owner_id, sort=sort, order=order)
+
+    async def get_pets_with_descriptions(self, latitude: Optional[float] = None, longitude: Optional[float] = None) -> List[PetDescDTO]:
+        return await self.pet_crud.get_pets_with_descriptions(latitude, longitude)
+
+    async def add_pet(self, pet: Pet, user_id: uuid.UUID):
+        pet.owner_id = user_id
+        await self.pet_crud.add_pet(pet)

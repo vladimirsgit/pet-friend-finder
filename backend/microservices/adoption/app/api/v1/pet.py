@@ -11,6 +11,7 @@ from app.exception.pet_not_found_error import PetNotFoundError
 from app.model.pet import Pet
 
 from app.requests.auth_mcrsrv import get_logged_in_user
+from app.schema.pet_create_dto import PetCreate
 
 from app.schema.user_dto import UserDTO
 
@@ -56,3 +57,12 @@ async def get_pets(
         raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail=e.message)
     except ValueError as e:
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail=str(e))
+
+@router.post("/add")
+async def add_pet(
+    pet: PetCreate,
+    pet_service: PetService = Depends(PetService),
+    user: UserDTO = Depends(get_logged_in_user),
+):
+    logger.info("Adding pet...")
+    await pet_service.add_pet(pet=Pet(**pet.model_dump()), user_id=user.id)

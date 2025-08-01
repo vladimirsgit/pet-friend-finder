@@ -78,6 +78,25 @@ services:
       - redis
       - rabbit
 
+  ai-microservice:
+    build:
+      context: ./backend/microservices/ai/
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/microservices/ai/.env
+    volumes:
+      - ./backend/microservices/ai/:/code
+    expose:
+      - "8004"
+    ports:
+      - "8004:8004"
+    networks:
+      - pff-backend-net
+    depends_on:
+      - db
+      - redis
+      - rabbit
+
   db:
     image: postgres:17
     volumes:

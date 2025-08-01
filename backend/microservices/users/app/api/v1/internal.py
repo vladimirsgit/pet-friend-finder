@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 from fastapi import APIRouter, Security, Depends, HTTPException
 

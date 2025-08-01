@@ -1,3 +1,5 @@
+import uuid
+
 from app.crud.base_crud import BaseCRUD
 from app.model.user import User
 
