@@ -5,7 +5,7 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field
 
 class UserSuggestDTO(BaseModel):
-    id: str
+    id: uuid.UUID
     bio: str
     latitude: float
     longitude: float
