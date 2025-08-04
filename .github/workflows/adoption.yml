@@ -1,0 +1,19 @@
+name: Adoption Microservice CI
+
+on:
+  push:
+    branches: 'main'
+    paths:
+    - 'backend/microservices/adoption'
+    - '.github/workflows/adoption.yml'
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: |-
+          cd backend/microservices/adoption
+          pytest ./
