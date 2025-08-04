@@ -2,9 +2,9 @@ name: Adoption Microservice CI
 
 on:
   push:
-    branches: 'main'
+    branches: [ 'main' ]
     paths:
-    - 'backend/microservices/adoption'
+    - 'backend/microservices/adoption/**'
     - '.github/workflows/adoption.yml'
 
 jobs:
@@ -13,7 +13,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Run tests
+      - name: Install dependencies
         run: |-
           cd backend/microservices/adoption
-          pytest ./
+          pip install -r requirements.txt
+      - name: Run tests
+        env:
+          PYTHONPATH: backend/microservices/adoption
+        run: |-
+          python -m pytest
