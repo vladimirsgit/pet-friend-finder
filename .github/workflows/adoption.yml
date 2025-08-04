@@ -13,12 +13,28 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.7'
+
       - name: Install dependencies
         run: |-
           cd backend/microservices/adoption
           pip install -r requirements.txt
+
       - name: Run tests
         env:
           PYTHONPATH: backend/microservices/adoption
         run: |-
           python -m pytest
+
+      - name: Build and push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: pet-friend-finder/adoption-microservice
+          tags: v1, latest
+          registry: docker.io
+          dockerfile: Dockerfile.ci
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
