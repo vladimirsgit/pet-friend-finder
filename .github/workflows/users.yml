@@ -1,11 +1,11 @@
-name: Adoption Microservice CI
+name: Users Microservice CI
 
 on:
   push:
     branches: [ 'main' ]
     paths:
-    - 'backend/microservices/adoption/**'
-    - '.github/workflows/adoption.yml'
+    - 'backend/microservices/users/**'
+    - '.github/workflows/users.yml'
 
 jobs:
   test-and-build:
@@ -20,20 +20,14 @@ jobs:
       - name: Install dependencies
         run: |-
           pip install -r requirements.txt
-        working-directory: backend/microservices/adoption
-      - name: Run tests
-        env:
-          PYTHONPATH: backend/microservices/adoption
-        run: |-
-          python -m pytest
-        working-directory: backend/microservices/adoption
+        working-directory: backend/microservices/users
 
       - name: Build and push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: vladimirsgit/pet-friend-finder
-          tags: adoption-microservice-v1
+          tags: users-microservice-v1
           registry: docker.io
-          dockerfile: backend/microservices/adoption/Dockerfile.ci
+          dockerfile: backend/microservices/users/Dockerfile.ci
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
