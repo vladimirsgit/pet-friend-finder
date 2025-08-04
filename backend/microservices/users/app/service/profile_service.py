@@ -26,20 +26,20 @@ class ProfileService:
         self.rabbit_c = rabbit_c
 
     async def create(self, profile: ProfileDTO, user_id: uuid.UUID, bg_tasks: BackgroundTasks):
-        # if await self.profile_crud.check_if_profile_exists_by_user_id(user_id):
-        #     profile_already_created_error = ProfileAlreadyCreatedError()
-        #     logger.error(profile_already_created_error.message)
-        #     raise profile_already_created_error
-        #
-        # await self.profile_crud.save(Profile(user_id=user_id,
-        #                                      first_name=profile.first_name,
-        #                                      last_name=profile.last_name,
-        #                                      bio=profile.bio,
-        #                                      latitude=profile.latitude,
-        #                                      longitude=profile.longitude,
-        #                                      age=profile.age,
-        #                                      gender=profile.gender,
-        #                                      phone_number=profile.phone_number))
+        if await self.profile_crud.check_if_profile_exists_by_user_id(user_id):
+            profile_already_created_error = ProfileAlreadyCreatedError()
+            logger.error(profile_already_created_error.message)
+            raise profile_already_created_error
+
+        await self.profile_crud.save(Profile(user_id=user_id,
+                                             first_name=profile.first_name,
+                                             last_name=profile.last_name,
+                                             bio=profile.bio,
+                                             latitude=profile.latitude,
+                                             longitude=profile.longitude,
+                                             age=profile.age,
+                                             gender=profile.gender,
+                                             phone_number=profile.phone_number))
         bg_tasks.add_task(self.rabbit_c.default_exchange.publish, aio_pika.Message(
                 body=json.dumps({"id": str(user_id),
                                  "bio": profile.bio,
@@ -48,17 +48,6 @@ class ProfileService:
                     }).encode('utf-8')
                 ), constants.PET_SUGGESTION_QUEUE_NAME
         )
-        # await self.rabbit_c.default_exchange.publish(
-        #     aio_pika.Message(
-        #         body=json.dumps({"id": str(user_id),
-        #                          "bio": profile.bio,
-        #                          "latitude":profile.latitude,
-        #                          "longitude":profile.longitude,
-        # }).encode('utf-8')
-        #     ),
-        #     routing_key=constants.PET_SUGGESTION_QUEUE_NAME
-        # )
-
 
     async def update(self, profile: ProfileDTO, user_id: uuid.UUID):
         await self.profile_crud.update(profile, user_id)

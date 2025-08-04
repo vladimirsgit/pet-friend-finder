@@ -3,6 +3,10 @@ from typing import Optional
 import aio_pika
 import aio_pika.abc
 
+from aiormq.exceptions import AMQPConnectionError
+
+import asyncio
+
 import logging
 
 from app.core.constants import constants
@@ -20,7 +24,18 @@ class RabbitMQClient:
 
     async def init_rabbit(self):
         url = f"amqp://{os.getenv('RABBIT_USERNAME')}:{os.getenv('RABBIT_PASSWORD')}@{os.getenv('RABBIT_HOST')}:{os.getenv('RABBIT_PORT')}/"
-        self.connection = await aio_pika.connect_robust(url)
+
+        for attempt in range(5):
+            try:
+                self.connection = await aio_pika.connect_robust(url)
+                break
+            except AMQPConnectionError as e:
+                error_message = str(e) + f"Failed to connect to rabbitmq client, attempt #{attempt + 1}."
+                if attempt < 4:
+                    error_message += " Retrying..."
+                logger.error(error_message)
+                if attempt < 4:
+                    await asyncio.sleep(10)
 
         self.channel = await self.connection.channel()
         await self.channel.declare_queue(name=constants.PET_SUGGESTION_QUEUE_NAME, durable=True)
