@@ -8,20 +8,11 @@ on:
     - '.github/workflows/auth.yml'
 
 jobs:
-  test-and-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12.7'
-
-      - name: Install dependencies
-        run: |-
-          pip install -r requirements.txt
-        working-directory: backend/microservices/auth
-
       - name: Build and push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
