@@ -1,0 +1,33 @@
+name: Auth Microservice CI
+
+on:
+  push:
+    branches: [ 'main' ]
+    paths:
+    - 'backend/microservices/auth/**'
+    - '.github/workflows/auth.yml'
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.7'
+
+      - name: Install dependencies
+        run: |-
+          pip install -r requirements.txt
+        working-directory: backend/microservices/auth
+
+      - name: Build and push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: vladimirsgit/pet-friend-finder
+          tags: auth-microservice-v1
+          registry: docker.io
+          dockerfile: backend/microservices/auth/Dockerfile.ci
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
