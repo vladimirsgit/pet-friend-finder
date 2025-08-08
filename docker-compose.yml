@@ -2,25 +2,6 @@ networks:
   pff-backend-net:
 
 services:
-  health-microservice:
-    build:
-      context: ./backend/microservices/health/
-      dockerfile: Dockerfile
-    env_file:
-      - ./backend/microservices/health/.env
-    volumes:
-      - ./backend/microservices/health/:/code
-    expose:
-      - "8000"
-    ports:
-      - "8000:8000"
-    networks:
-      - pff-backend-net
-    depends_on:
-      - db
-      - redis
-      - rabbit
-    
   users-microservice:
     build:
       context: ./backend/microservices/users/
@@ -98,7 +79,9 @@ services:
       - rabbit
 
   db:
-    image: postgres:17
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
     volumes:
       - pff_postgres_data:/var/lib/postgresql/data/
     expose:
@@ -120,8 +103,6 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/certs:/etc/nginx/certs
-    depends_on:
-      - health-microservice
     networks:
       - pff-backend-net
 
