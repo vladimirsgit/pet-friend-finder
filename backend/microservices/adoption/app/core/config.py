@@ -23,3 +23,9 @@ class Config:
     # INTERNAL API KEYS
     AUTH_INTERNAL_SERVICE_API_KEY = os.getenv("AUTH_INTERNAL_SERVICE_API_KEY")
     OWN_API_KEY = os.getenv("OWN_API_KEY")
+
+    # REDIS
+    REDIS_HOST = os.getenv("REDIS_HOST")
+    REDIS_PORT = os.getenv("REDIS_PORT")
+    REDIS_USER = os.getenv("REDIS_USER")
+    REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")

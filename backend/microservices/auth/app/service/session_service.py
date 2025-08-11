@@ -63,7 +63,7 @@ class SessionService:
             error = RefreshTokenExpiredError()
             logger.error(error.message)
             raise error
-        username = username.decode('utf-8')
+        # username = username.decode('utf-8')
 
         new_refresh_token = await SessionService.generate_refresh_token()
         await self.r_client.delete(hashed_token)

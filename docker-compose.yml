@@ -17,8 +17,8 @@ services:
     networks:
       - pff-backend-net
     depends_on:
-      - db
-      - redis
+#      - db
+#      - redis
       - rabbit
   
   auth-microservice:
@@ -36,8 +36,8 @@ services:
     networks:
       - pff-backend-net
     depends_on:
-      - db
-      - redis
+#      - db
+#      - redis
       - rabbit
 
   adoption-microservice:
@@ -55,8 +55,8 @@ services:
     networks:
       - pff-backend-net
     depends_on:
-      - db
-      - redis
+#      - db
+#      - redis
       - rabbit
 
   ai-microservice:
@@ -74,26 +74,26 @@ services:
     networks:
       - pff-backend-net
     depends_on:
-      - db
-      - redis
+#      - db
+#      - redis
       - rabbit
 
-  db:
-    build:
-      context: ./postgres
-      dockerfile: Dockerfile
-    volumes:
-      - pff_postgres_data:/var/lib/postgresql/data/
-    expose:
-      - "5432"
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypass
-      - POSTGRES_DB=pffdb
-    networks:
-      - pff-backend-net
+#  db:
+#    build:
+#      context: ./postgres
+#      dockerfile: Dockerfile
+#    volumes:
+#      - pff_postgres_data-cloned:/var/lib/postgresql/data/
+#    expose:
+#      - "5432"
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_USER=myuser
+#      - POSTGRES_PASSWORD=mypass
+#      - POSTGRES_DB=pffdb
+#    networks:
+#      - pff-backend-net
 
   nginx:
     image: nginx:1.28.0-alpine
@@ -106,16 +106,16 @@ services:
     networks:
       - pff-backend-net
 
-  redis:
-    image: redis:7.4-alpine
-    command: redis-server /usr/local/etc/redis/redis.conf
-    expose:
-      - "6379"
-    volumes:
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-      - pff_redis_data:/data
-    networks:
-      - pff-backend-net
+#  redis:
+#    image: redis:7.4-alpine
+#    command: redis-server /usr/local/etc/redis/redis.conf
+#    expose:
+#      - "6379"
+#    volumes:
+#      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+#      - pff_redis_data:/data
+#    networks:
+#      - pff-backend-net
 
   rabbit:
     image: rabbitmq:4.1.2-management
@@ -149,6 +149,6 @@ services:
 #      - pff-backend-net
 
 volumes:
-  pff_postgres_data:
-  pff_redis_data:
+#  pff_postgres_data-cloned:
+#  pff_redis_data:
   pff_rabbitmq_data:

@@ -57,7 +57,7 @@ class AuthService:
             invalid_code_error = InvalidCodeError()
             logger.error(invalid_code_error.message)
             raise invalid_code_error
-        username = username.decode('utf-8')
+        # username = username.decode('utf-8')
         await self.r_client.delete(hashed_code)
         await users_mcrsrv.confirm_email(username)
 
