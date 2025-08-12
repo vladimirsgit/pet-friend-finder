@@ -28,16 +28,16 @@ class RabbitMQClient:
     async def init_rabbit(self):
         url = f"amqp://{os.getenv('RABBIT_USERNAME')}:{os.getenv('RABBIT_PASSWORD')}@{os.getenv('RABBIT_HOST')}:{os.getenv('RABBIT_PORT')}/"
 
-        for attempt in range(5):
+        for attempt in range(10):
             try:
                 self.connection = await aio_pika.connect_robust(url)
                 break
             except AMQPConnectionError as e:
                 error_message = str(e) + f"Failed to connect to rabbitmq client, attempt #{attempt + 1}."
-                if attempt < 4:
+                if attempt < 9:
                     error_message += " Retrying..."
                 logger.error(error_message)
-                if attempt < 4:
+                if attempt < 9:
                     await asyncio.sleep(10)
 
         async with self.connection:
