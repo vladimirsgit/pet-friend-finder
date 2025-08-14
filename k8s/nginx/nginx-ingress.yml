@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  labels:
+    name: nginx
+spec:
+  rules:
+  - host: pff.local
+    http:
+      paths:
+      - path: "/adoption(/|$)(.*)"
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: adoption-microservice
+            port: 
+              number: 8003
+      - path: "/users(/|$)(.*)"
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: users-microservice
+            port: 
+              number: 8001
+      - path: "/auth(/|$)(.*)"
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: auth-microservice
+            port: 
+              number: 8002
+

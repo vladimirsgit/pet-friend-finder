@@ -1,0 +1,23 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 2
+  image: rabbitmq:4.1.2
+  service:
+    type: ClusterIP
+  persistence:
+    storageClassName: standard
+    storage: 300Mi
+  resources:
+    requests:
+      cpu: 200m
+      memory: 500Mi
+    limits:
+      cpu: 200m
+      memory: 500Mi 
+  rabbitmq:
+    envConfig: |
+      RABBITMQ_DEFAULT_USER=myuser
+      RABBITMQ_DEFAULT_PASS=mypass

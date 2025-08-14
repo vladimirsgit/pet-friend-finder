@@ -130,24 +130,6 @@ services:
       - pff-backend-net
 
 
-#  node:
-#    build:
-#      context: ./frontend/
-#      dockerfile: Dockerfile
-#    expose:
-#      - "5173"
-#    ports:
-#      - "5173:5173"
-#    stdin_open: true
-#    tty: true
-#    volumes:
-#      - ./frontend/pff-react/src:/app/src
-#      - ./frontend/pff-react/public:/app/public
-#    depends_on:
-#      - health-microservice
-#    networks:
-#      - pff-backend-net
-
 volumes:
 #  pff_postgres_data-cloned:
 #  pff_redis_data:
